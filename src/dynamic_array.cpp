@@ -30,7 +30,7 @@ DynamicArray::DynamicArray(int array_size) {
 DynamicArray::DynamicArray(const DynamicArray& array_to_copy){
     size = array_to_copy.size;
     capacity = array_to_copy.capacity;
-    data = new int(capacity);
+    data = new int[capacity]{};
 
     for(int i = 0; i < size; ++i){
         data[i] = array_to_copy.data[i];
@@ -64,7 +64,7 @@ bool DynamicArray::pushBack(int value){
 
     if(size >= capacity){
         int new_capacity = (capacity == 0) ? 1 : capacity*2;
-        int* new_data = new int(new_capacity);
+        int* new_data = new int[new_capacity]{};
         std::memcpy(new_data, data, size * sizeof(int));
         delete[] data;
         data = new_data;
