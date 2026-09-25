@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 #include "dynamic_array.h"
 
 bool DynamicArray::isValueInRange(int value){
@@ -22,12 +23,14 @@ DynamicArray::DynamicArray(int array_size) {
             array_size = 0;
     }
     size = array_size;
-    data = new int[size]{};
+    capacity = array_size;
+    data = new int[capacity]{};
 }
 
 DynamicArray::DynamicArray(const DynamicArray& array_to_copy){
     size = array_to_copy.size;
-    data = new int[size];
+    capacity = array_to_copy.capacity;
+    data = new int(capacity);
 
     for(int i = 0; i < size; ++i){
         data[i] = array_to_copy.data[i];
@@ -59,19 +62,17 @@ bool DynamicArray::pushBack(int value){
         return false;
     }
 
-    int new_size = size + 1;
-    int* new_data = new int[new_size]{};
-
-    for (int i = 0; i < size; ++i) {
-        new_data[i] = data[i];
+    if(size >= capacity){
+        int new_capacity = (capacity == 0) ? 1 : capacity*2;
+        int* new_data = new int(new_capacity);
+        std::memcpy(new_data, data, size * sizeof(int));
+        delete[] data;
+        data = new_data;
+        capacity = new_capacity;
     }
 
-    new_data[size] = value;
-
-    delete[] data;
-    data = new_data;
-    size = new_size;
-
+    data[size]= value;
+    size++;
     return true;
 }
 
